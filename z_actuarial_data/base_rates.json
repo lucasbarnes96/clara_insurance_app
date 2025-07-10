@@ -1,0 +1,26 @@
+{
+  "description": "Base Insurance Rates and Risk Factor Weightings",
+  "effective_date": "2025-01-01",
+  "version": "1.0",
+  "base_annual_premium": 1200,
+  "currency": "CAD",
+  "territory": "Ontario",
+  "risk_factor_weights": {
+    "driving_history": 0.40,
+    "driver_experience": 0.25, 
+    "vehicle_safety": 0.20,
+    "vehicle_usage": 0.10,
+    "location_risk": 0.05
+  },
+  "coverage_minimums": {
+    "liability_bodily_injury": 200000,
+    "liability_property_damage": 200000,
+    "accident_benefits": 65000,
+    "uninsured_motorist": 200000
+  },
+  "coverage_defaults": {
+    "comprehensive_deductible": 1000,
+    "collision_deductible": 1000,
+    "liability_limits": 1000000
+  }
+} 

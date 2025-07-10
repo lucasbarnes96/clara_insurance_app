@@ -1,0 +1,65 @@
+{
+  "description": "Driving Violation Rating Table - Deterministic penalty factors",
+  "effective_date": "2025-01-01",
+  "version": "1.0",
+  "base_clean_record": {
+    "factor": 0.80,
+    "description": "Clean driving record discount"
+  },
+  "violation_penalties": {
+    "speeding_minor": { 
+      "points": 0.12, 
+      "description": "Minor speeding (1-15 km/h over)" 
+    },
+    "speeding_major": { 
+      "points": 0.18, 
+      "description": "Major speeding (16-30 km/h over)" 
+    },
+    "speeding_excessive": { 
+      "points": 0.25, 
+      "description": "Excessive speeding (31+ km/h over)" 
+    },
+    "careless_driving": { 
+      "points": 0.30, 
+      "description": "Careless or reckless driving" 
+    },
+    "following_too_close": { 
+      "points": 0.10, 
+      "description": "Following too closely" 
+    },
+    "improper_lane_change": { 
+      "points": 0.08, 
+      "description": "Improper lane change" 
+    },
+    "failure_to_yield": { 
+      "points": 0.10, 
+      "description": "Failure to yield right of way" 
+    },
+    "at_fault_accident": { 
+      "points": 0.22, 
+      "description": "At-fault collision" 
+    },
+    "dui": { 
+      "points": 0.60, 
+      "description": "Impaired driving conviction" 
+    },
+    "suspended_license": { 
+      "points": 0.45, 
+      "description": "License suspension" 
+    }
+  },
+  "violation_decay": {
+    "description": "How violations lose impact over time",
+    "year_1": 1.00,
+    "year_2": 0.75,
+    "year_3": 0.50,
+    "year_4": 0.25,
+    "year_5_plus": 0.00
+  },
+  "escalation_thresholds": {
+    "dui_any": true,
+    "multiple_at_fault": 2,
+    "total_points_threshold": 0.40,
+    "young_driver_violations": 2
+  }
+} 

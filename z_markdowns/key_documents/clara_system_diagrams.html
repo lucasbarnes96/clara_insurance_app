@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clara Insurance System Architecture & Workflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        .nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav a:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .diagram-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .diagram-section h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 2rem 0;
+            background: #fafbfc;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e1e8ed;
+        }
+        
+        @media (max-width: 768px) {
+            .nav ul {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Clara Insurance System Architecture & Workflow</h1>
+        <p>Comprehensive visualization of the Clara Insurance system based on the Trusted Expert Advisor manifesto</p>
+    </div>
+    
+    <nav class="nav">
+        <ul>
+            <li><a href="#architecture">System Architecture</a></li>
+            <li><a href="#journey">Customer Journey</a></li>
+            <li><a href="#agents">Agent Architecture</a></li>
+            <li><a href="#calculations">Calculation Flow</a></li>
+            <li><a href="#dashboard">HITL Dashboard</a></li>
+            <li><a href="#dataflow">Data Flow</a></li>
+            <li><a href="#technology">Technology Stack</a></li>
+            <li><a href="#principles">Design Principles</a></li>
+        </ul>
+    </nav>
+
+    <div class="diagram-section" id="architecture">
+        <h2>System Architecture Overview</h2>
+        <div class="mermaid">
+graph TB
+    subgraph "Customer Interface"
+        CI[Customer Interface<br/>Text & Voice Input]
+        CV[Voice-to-Text<br/>Natural Language Processing]
+    end
+    
+    subgraph "AI Agent Layer"
+        CA[CustomerAgent<br/>Conversational Expert]
+        OA[OperationsAgent<br/>Actuarial Intelligence]
+        GS[GeminiService<br/>Gemini 2.5 Flash Engine]
+    end
+    
+    subgraph "Deterministic Core"
+        RE[RiskEngine<br/>Risk Calculations]
+        QG[QuoteGenerator<br/>Carrier Quotes]
+        AT[Actuarial Tables<br/>z_actuarial_data/]
+    end
+    
+    subgraph "Human-in-the-Loop"
+        HD[HITL Dashboard<br/>Expert Review]
+        HE[Human Expert<br/>Final Decision]
+    end
+    
+    subgraph "Data Layer"
+        MDS[MemoryDataStore<br/>Demo Mode]
+        FS[Firestore<br/>Production Mode]
+    end
+    
+    CI --> CA
+    CV --> CA
+    CA --> GS
+    OA --> GS
+    CA <--> MDS
+    OA <--> MDS
+    OA --> RE
+    OA --> QG
+    RE --> AT
+    QG --> AT
+    OA --> HD
+    HD --> HE
+    HE --> CA
+    MDS -.-> FS
+    
+    style CA fill:#e1f5fe
+    style OA fill:#e8f5e8
+    style GS fill:#fff3e0
+    style AT fill:#f3e5f5
+    style HD fill:#ffebee
+        </div>
+    </div>
+
+    <div class="diagram-section" id="journey">
+        <h2>End-to-End Customer Journey</h2>
+        <div class="mermaid">
+flowchart TD
+    subgraph "Phase 1: Data Collection"
+        A[Customer Initiates<br/>Conversation] --> B[CustomerAgent<br/>Greeting & Explanation]
+        B --> C[Intelligent Data<br/>Extraction<br/>Text/Voice]
+        C --> D[Data Confirmation<br/>& Go-Ahead]
+    end
+    
+    subgraph "Phase 2: Automated Underwriting"
+        D --> E[Central Orchestrator<br/>Handoff to OperationsAgent]
+        E --> F{Hard Fork<br/>Risk Assessment}
+        F -->|Low Risk| G[Generate Quotes<br/>Multiple Carriers]
+        F -->|High Risk| H[Stop Processing<br/>No Quotes Generated]
+        G --> I[AI Analysis<br/>Customer-Facing]
+        H --> J[Rejection Summary<br/>Internal-Facing]
+        I --> K[Approval Package<br/>to HITL Dashboard]
+        J --> L[Rejection Package<br/>to HITL Dashboard]
+    end
+    
+    subgraph "Phase 3: Human Review"
+        K --> M[Human Expert<br/>Review Dashboard]
+        L --> M
+        M --> N{Expert Decision}
+        N -->|Approve| O[Approve Quote]
+        N -->|Reject| P[Reject Application]
+    end
+    
+    subgraph "Phase 4: Quote Presentation"
+        O --> Q[CustomerAgent<br/>Re-engaged]
+        P --> Q
+        Q --> R{Approved?}
+        R -->|Yes| S[Present Final Quote<br/>with Insights]
+        R -->|No| T[Communicate Decision<br/>Politely & Guide Next Steps]
+    end
+    
+    style F fill:#fff3e0
+    style M fill:#ffebee
+    style N fill:#ffebee
+    style Q fill:#e1f5fe
+        </div>
+    </div>
+
+    <div class="diagram-section" id="agents">
+        <h2>Agent Architecture & Responsibilities</h2>
+        <div class="mermaid">
+graph LR
+    subgraph "CustomerAgent: Conversational Expert"
+        CA1[Data Collection<br/>Essential Info Only]
+        CA2[Voice Input<br/>Processing]
+        CA3[Quote Presentation<br/>with Insights]
+        CA4[Educational<br/>Explanations]
+    end
+    
+    subgraph "OperationsAgent: Actuarial Intelligence"
+        OA1[Risk Assessment<br/>Hard Fork Logic]
+        OA2[Quote Generation<br/>Multiple Carriers]
+        OA3[AI Analysis<br/>WHY Explanations]
+        OA4[Package Creation<br/>Approval/Rejection]
+    end
+    
+    subgraph "Core Principles"
+        P1[Math is Sacred<br/>Deterministic Only]
+        P2[AI Explains Math<br/>Never Modifies]
+        P3[Stateless Design<br/>Complete I/O]
+        P4[Human Review<br/>All Quotes]
+    end
+    
+    CA1 --> OA1
+    OA2 --> CA3
+    OA3 --> CA4
+    P1 --> OA1
+    P2 --> OA3
+    P3 --> CA1
+    P3 --> OA1
+    P4 --> OA4
+    
+    style CA1 fill:#e1f5fe
+    style CA2 fill:#e1f5fe
+    style CA3 fill:#e1f5fe
+    style CA4 fill:#e1f5fe
+    style OA1 fill:#e8f5e8
+    style OA2 fill:#e8f5e8
+    style OA3 fill:#e8f5e8
+    style OA4 fill:#e8f5e8
+    style P1 fill:#f3e5f5
+    style P2 fill:#f3e5f5
+    style P3 fill:#f3e5f5
+    style P4 fill:#f3e5f5
+        </div>
+    </div>
+
+    <div class="diagram-section" id="calculations">
+        <h2>Deterministic Calculation Flow</h2>
+        <div class="mermaid">
+flowchart TD
+    subgraph "Customer Data Input"
+        CD[Customer Profile<br/>Age, Location, Vehicle<br/>Usage, Violations]
+    end
+    
+    subgraph "Actuarial Lookup Tables"
+        AT1[Age Rating<br/>Table]
+        AT2[Vehicle Rating<br/>Table]
+        AT3[Location Rating<br/>Table]
+        AT4[Usage Rating<br/>Table]
+        AT5[Violation Rating<br/>Table]
+    end
+    
+    subgraph "Risk Engine Process"
+        RE1[Risk Score<br/>Calculation]
+        RE2[Weighted Sum<br/>Algorithm]
+        RE3[Base Premium<br/>Adjustment]
+    end
+    
+    subgraph "Quote Generation"
+        QG1[Carrier Appetite<br/>Tables]
+        QG2[Focus Factor<br/>Application]
+        QG3[Discount<br/>Calculation]
+        QG4[Final Premium<br/>Math.ceil]
+    end
+    
+    subgraph "AI Intelligence Layer"
+        AI1[Risk Analysis<br/>Explanation]
+        AI2[Carrier Selection<br/>Reasoning]
+        AI3[Pricing Factor<br/>Insights]
+        AI4[Customer Education<br/>Content]
+    end
+    
+    CD --> AT1
+    CD --> AT2
+    CD --> AT3
+    CD --> AT4
+    CD --> AT5
+    AT1 --> RE1
+    AT2 --> RE1
+    AT3 --> RE1
+    AT4 --> RE1
+    AT5 --> RE1
+    RE1 --> RE2
+    RE2 --> RE3
+    RE3 --> QG1
+    QG1 --> QG2
+    QG2 --> QG3
+    QG3 --> QG4
+    QG4 --> AI1
+    AI1 --> AI2
+    AI2 --> AI3
+    AI3 --> AI4
+    
+    style RE1 fill:#f3e5f5
+    style RE2 fill:#f3e5f5
+    style RE3 fill:#f3e5f5
+    style QG4 fill:#f3e5f5
+    style AI1 fill:#fff3e0
+    style AI2 fill:#fff3e0
+    style AI3 fill:#fff3e0
+    style AI4 fill:#fff3e0
+        </div>
+    </div>
+
+    <div class="diagram-section" id="dashboard">
+        <h2>HITL Dashboard System</h2>
+        <div class="mermaid">
+graph TB
+    subgraph "Dashboard Interface"
+        EQ[Escalation Queue<br/>Pending Reviews]
+        AA[Agent Activity<br/>System Events]
+        WS[Workflow Stages<br/>Progress Tracking]
+    end
+    
+    subgraph "Case Review Panel"
+        CD[Customer Data<br/>Profile & Vehicle]
+        QA[Quote Analysis<br/>Recommendations]
+        AO[Alternative Options<br/>Other Carriers]
+    end
+    
+    subgraph "Decision Actions"
+        AB[Approve Button<br/>Send to Customer]
+        DB[Decline Button<br/>Additional Review]
+    end
+    
+    subgraph "Real-time Updates"
+        WS1[Socket.io<br/>Live Updates]
+        NE[New Escalations<br/>Notifications]
+        WA[Workflow Approvals<br/>Status Changes]
+    end
+    
+    EQ --> CD
+    AA --> CD
+    WS --> CD
+    CD --> QA
+    QA --> AO
+    AO --> AB
+    AO --> DB
+    WS1 --> EQ
+    WS1 --> AA
+    NE --> EQ
+    WA --> WS
+    
+    style EQ fill:#ffebee
+    style AB fill:#e8f5e8
+    style DB fill:#fff3e0
+    style WS1 fill:#e1f5fe
+        </div>
+    </div>
+
+    <div class="diagram-section" id="dataflow">
+        <h2>Data Flow & State Management</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant C as Customer
+    participant CA as CustomerAgent
+    participant O as Orchestrator
+    participant OA as OperationsAgent
+    participant RE as RiskEngine
+    participant QG as QuoteGenerator
+    participant H as HITL Dashboard
+    participant E as Human Expert
+    
+    C->>CA: Start Conversation
+    CA->>C: Collect Essential Data
+    C->>CA: Provide Information
+    CA->>C: Confirm & Request Go-Ahead
+    C->>CA: Approve Processing
+    
+    CA->>O: Complete Data Package
+    O->>OA: Handoff to Operations
+    OA->>RE: Risk Assessment
+    RE-->>OA: Risk Score
+    
+    alt Low Risk
+        OA->>QG: Generate Quotes
+        QG-->>OA: Multiple Carrier Quotes
+        OA->>OA: Create Approval Package
+        OA->>H: Send to Dashboard
+    else High Risk
+        OA->>OA: Create Rejection Package
+        OA->>H: Send to Dashboard
+    end
+    
+    H->>E: Present for Review
+    E->>H: Approve/Reject Decision
+    H->>CA: Update Status
+    CA->>C: Present Final Result
+    
+    Note over CA,OA: All agents are stateless<br/>Complete context in/out
+    Note over RE,QG: Deterministic calculations<br/>No AI modification
+    Note over H,E: Human oversight<br/>All quotes reviewed
+        </div>
+    </div>
+
+    <div class="diagram-section" id="technology">
+        <h2>Technology Stack & Integration</h2>
+        <div class="mermaid">
+graph TB
+    subgraph "Frontend Layer"
+        HTML[HTML/CSS/JS<br/>Customer Interface]
+        DASH[Dashboard<br/>Real-time UI]
+        VOICE[Voice Input<br/>Speech-to-Text]
+    end
+    
+    subgraph "Backend Services"
+        SERVER[Express Server<br/>Node.js/TypeScript]
+        SOCKET[Socket.io<br/>Real-time Updates]
+        GEMINI[Gemini 2.5 Flash<br/>AI Reasoning Engine]
+    end
+    
+    subgraph "Agent Layer"
+        CUST[CustomerAgent.ts<br/>Conversation Management]
+        OPS[OperationsAgent.ts<br/>Actuarial Processing]
+        BASE[BaseAgent.ts<br/>Common Functionality]
+    end
+    
+    subgraph "Business Logic"
+        RATING[RiskEngine.ts<br/>Risk Calculations]
+        QUOTE[QuoteGenerator.ts<br/>Carrier Quotes]
+        TOOLS[Tools Directory<br/>Specialized Functions]
+    end
+    
+    subgraph "Data Sources"
+        TABLES[Actuarial Tables<br/>JSON Lookup Data]
+        MEMORY[MemoryDataStore<br/>Session State]
+        FIREBASE[Firebase/Firestore<br/>Production Data]
+    end
+    
+    HTML --> SERVER
+    DASH --> SOCKET
+    VOICE --> SERVER
+    SERVER --> CUST
+    SERVER --> OPS
+    CUST --> BASE
+    OPS --> BASE
+    BASE --> GEMINI
+    OPS --> RATING
+    OPS --> QUOTE
+    RATING --> TABLES
+    QUOTE --> TABLES
+    CUST --> MEMORY
+    OPS --> MEMORY
+    MEMORY -.-> FIREBASE
+    
+    style GEMINI fill:#fff3e0
+    style TABLES fill:#f3e5f5
+    style MEMORY fill:#e1f5fe
+    style FIREBASE fill:#e8f5e8
+        </div>
+    </div>
+
+    <div class="diagram-section" id="principles">
+        <h2>Key Design Principles</h2>
+        <div class="mermaid">
+mindmap
+  root((Clara Insurance<br/>Design Principles))
+    Trusted Expert Advisor
+      Mathematical Precision
+      Intelligent Insights
+      Educational Value
+    Hybrid Intelligence
+      Deterministic Core
+      AI Explanations
+      Never Mixed
+    Agentic Architecture
+      CustomerAgent
+      OperationsAgent
+      Stateless Design
+    Human Oversight
+      All Quotes Reviewed
+      Expert Validation
+      Quality Assurance
+    Efficiency
+      Essential Data Only
+      Streamlined Process
+      Respectful of Time
+    Reliability
+      Predictable Workflow
+      Linear Process
+      Consistent Results
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#667eea',
+                primaryTextColor: '#333',
+                primaryBorderColor: '#667eea',
+                lineColor: '#667eea',
+                secondaryColor: '#f8f9fa',
+                tertiaryColor: '#e8f5e8'
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

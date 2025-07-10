@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y", 
+        "firebase-tools@latest", 
+        "experimental:mcp",
+        "--dir", "/Users/lucasbarnes/Documents/Projects/Clara\\ Insurance/clara_insurance_app",
+        "--only", "auth,firestore,storage,messaging"
+      ]
+    }
+  }
+} 

@@ -1,0 +1,16 @@
+{
+  "description": "Driver Age Rating Table - Deterministic experience scoring based on age ranges",
+  "effective_date": "2025-01-01",
+  "version": "1.0",
+  "age_bands": [
+    { "min_age": 16, "max_age": 19, "factor": 1.50, "description": "New drivers (16-19)" },
+    { "min_age": 20, "max_age": 24, "factor": 1.30, "description": "Young drivers (20-24)" },
+    { "min_age": 25, "max_age": 29, "factor": 1.05, "description": "Early career (25-29)" },
+    { "min_age": 30, "max_age": 39, "factor": 0.90, "description": "Prime drivers (30-39)" },
+    { "min_age": 40, "max_age": 49, "factor": 0.85, "description": "Experienced drivers (40-49)" },
+    { "min_age": 50, "max_age": 59, "factor": 0.88, "description": "Mature drivers (50-59)" },
+    { "min_age": 60, "max_age": 69, "factor": 0.92, "description": "Senior drivers (60-69)" },
+    { "min_age": 70, "max_age": 79, "factor": 1.10, "description": "Elderly drivers (70-79)" },
+    { "min_age": 80, "max_age": 99, "factor": 1.25, "description": "High-risk elderly (80+)" }
+  ]
+} 

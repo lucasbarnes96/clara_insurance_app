@@ -1,0 +1,37 @@
+{
+  "description": "Carrier Risk Appetite Table - Deterministic pricing strategies focused on core risk factors",
+  "effective_date": "2025-01-01",
+  "version": "1.0",
+  "carriers": {
+    "Intact Insurance": {
+      "focus_factor": "experienceScore",
+      "base_multiplier": 1.02,
+      "description": "Conservative carrier focused on driver experience",
+      "discounts": {
+        "clean_record": { "amount": 120, "condition": "no_violations" },
+        "garage_parking": { "amount": 80, "condition": "garage_parking" }
+      },
+      "minimum_discount_cap": 0.85
+    },
+    "Aviva Canada": {
+      "focus_factor": "usageScore", 
+      "base_multiplier": 1.00,
+      "description": "Balanced carrier focused on vehicle usage",
+      "discounts": {
+        "clean_record": { "amount": 100, "condition": "no_violations" },
+        "low_usage": { "amount": 75, "condition": "under_12000_km" }
+      },
+      "minimum_discount_cap": 0.80
+    },
+    "Economical Insurance": {
+      "focus_factor": "drivingHistoryScore",
+      "base_multiplier": 0.96,
+      "description": "Aggressive pricing focused on clean driving records",
+      "discounts": {
+        "clean_record": { "amount": 150, "condition": "no_violations" },
+        "low_usage": { "amount": 80, "condition": "under_15000_km" }
+      },
+      "minimum_discount_cap": 0.75
+    }
+  }
+} 

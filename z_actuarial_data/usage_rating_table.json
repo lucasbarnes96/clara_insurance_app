@@ -1,0 +1,23 @@
+{
+  "description": "Vehicle Usage Rating Table - Annual kilometers risk factors",
+  "effective_date": "2025-01-01",
+  "version": "1.0", 
+  "usage_bands": [
+    { "min_km": 0, "max_km": 5000, "factor": 0.85, "description": "Very low usage" },
+    { "min_km": 5001, "max_km": 10000, "factor": 0.90, "description": "Low usage" },
+    { "min_km": 10001, "max_km": 15000, "factor": 0.95, "description": "Below average usage" },
+    { "min_km": 15001, "max_km": 20000, "factor": 1.00, "description": "Average usage" },
+    { "min_km": 20001, "max_km": 25000, "factor": 1.05, "description": "Above average usage" },
+    { "min_km": 25001, "max_km": 30000, "factor": 1.15, "description": "High usage" },
+    { "min_km": 30001, "max_km": 40000, "factor": 1.25, "description": "Very high usage" },
+    { "min_km": 40001, "max_km": 60000, "factor": 1.35, "description": "Commercial-level usage" },
+    { "min_km": 60001, "max_km": 999999, "factor": 1.50, "description": "Extreme usage" }
+  ],
+  "primary_use_adjustments": {
+    "pleasure": { "factor": 0.95, "description": "Recreational use only" },
+    "commute": { "factor": 1.00, "description": "Standard commuting" },
+    "business": { "factor": 1.10, "description": "Business travel" },
+    "commercial": { "factor": 1.25, "description": "Commercial delivery" },
+    "farm": { "factor": 0.90, "description": "Farm use" }
+  }
+} 
