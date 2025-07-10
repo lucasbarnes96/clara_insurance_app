@@ -71,3 +71,8 @@ node_modules/
 dist
 
 firebase-key.json
+.env
+firebase-debug.log
+*.log
+node_modules/
+dist/
